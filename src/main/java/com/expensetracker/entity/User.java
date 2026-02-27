@@ -34,6 +34,10 @@ public class User {
     @Column(length = 64)
     private String loginMethod;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -51,4 +55,10 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * User role enumeration for role-based access control.
+     */
+    public enum UserRole {
+        USER, ADMIN
+    }
 }
