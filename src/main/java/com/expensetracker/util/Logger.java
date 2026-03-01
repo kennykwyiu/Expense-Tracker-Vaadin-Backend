@@ -39,4 +39,11 @@ public class Logger {
         return sb.toString();
     }
 
+    public static Logger create(Class<?> clazz) {
+        return new Logger(clazz.getSimpleName());
+    }
+
+    public static Logger create(String context) {
+        return new Logger(context);
+    }
 }
