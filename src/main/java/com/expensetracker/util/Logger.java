@@ -18,4 +18,9 @@ public class Logger {
     private final org.slf4j.Logger logger;
     private final String context;
 
+    public Logger(String context) {
+        this.context = context;
+        this.logger = LoggerFactory.getLogger(context);
+    }
+
 }
