@@ -23,4 +23,20 @@ public class Logger {
         this.logger = LoggerFactory.getLogger(context);
     }
 
+    /**
+     * Format data map into a readable string for logging.
+     */
+    private String formatData(Map<String, Object> data) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        data.forEach((key, value) -> {
+            sb.append(key).append("=").append(value).append(", ");
+        });
+        if (sb.length() > 1) {
+            sb.setLength(sb.length() - 2);
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
