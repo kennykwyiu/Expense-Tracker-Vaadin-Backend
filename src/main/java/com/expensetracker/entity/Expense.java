@@ -13,6 +13,13 @@ import java.time.LocalDateTime;
  * Each expense is associated with a user and contains amount, category, and description.
  */
 @Entity
+@Table(name = "expenses", indexes = {
+    @Index(name = "idx_user_id", columnList = "user_id"),
+    @Index(name = "idx_expense_date", columnList = "expense_date"),
+    @Index(name = "idx_user_expense_date", columnList = "user_id,expense_date"),
+    @Index(name = "idx_category", columnList = "category"),
+    @Index(name = "idx_created_at", columnList = "created_at")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
