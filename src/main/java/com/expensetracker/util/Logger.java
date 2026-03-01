@@ -15,4 +15,7 @@ import java.util.Map;
  *   logger.debug("Query result", Map.of("count", 10));
  */
 public class Logger {
+    private final org.slf4j.Logger logger;
+    private final String context;
+
 }
