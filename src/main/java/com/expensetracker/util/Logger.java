@@ -64,6 +64,20 @@ public class Logger {
     }
 
     /**
+     * Log debug messages for detailed diagnostic information.
+     * Useful during development and troubleshooting.
+     */
+    public void debug(String message, Map<String, Object> data) {
+        if (logger.isDebugEnabled()) {
+            if (data != null && !data.isEmpty()) {
+                logger.debug("{} - {}", message, formatData(data));
+            } else {
+                logger.debug(message);
+            }
+        }
+    }
+
+    /**
      * Format data map into a readable string for logging.
      */
     private String formatData(Map<String, Object> data) {
