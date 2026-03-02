@@ -40,6 +40,19 @@ public class Logger {
     }
 
     /**
+     * Log error messages for exceptions and failures.
+     * Automatically extracts stack traces from Exception objects.
+     */
+    public void error(String message, Exception exception) {
+        if (exception != null) {
+            logger.error("{} - {}: {}", message, exception.getClass().getSimpleName(), exception.getMessage(), exception);
+        } else {
+            logger.error(message);
+        }
+    }
+
+
+    /**
      * Format data map into a readable string for logging.
      */
     private String formatData(Map<String, Object> data) {
