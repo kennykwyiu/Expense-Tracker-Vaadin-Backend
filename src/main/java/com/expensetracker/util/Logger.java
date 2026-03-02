@@ -77,6 +77,13 @@ public class Logger {
         }
     }
 
+    public void debug(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(message);
+        }
+    }
+
+
     /**
      * Format data map into a readable string for logging.
      */
