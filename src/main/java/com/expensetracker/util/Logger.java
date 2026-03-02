@@ -39,6 +39,10 @@ public class Logger {
         return sb.toString();
     }
 
+    /**
+     * Create a logger instance for a specific context/class.
+     * Recommended usage: Logger logger = Logger.create(MyClass.class);
+     */
     public static Logger create(Class<?> clazz) {
         return new Logger(clazz.getSimpleName());
     }
