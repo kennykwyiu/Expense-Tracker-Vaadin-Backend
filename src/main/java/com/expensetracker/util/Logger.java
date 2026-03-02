@@ -24,6 +24,22 @@ public class Logger {
     }
 
     /**
+     * Log informational messages for successful operations.
+     * Use for tracking normal application flow and state changes.
+     */
+    public void info(String message, Map<String, Object> data) {
+        if (data != null && !data.isEmpty()) {
+            logger.info("{} - {}", message, formatData(data));
+        } else {
+            logger.info(message);
+        }
+    }
+
+    public void info(String message) {
+        logger.info(message);
+    }
+
+    /**
      * Format data map into a readable string for logging.
      */
     private String formatData(Map<String, Object> data) {
