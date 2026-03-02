@@ -51,6 +51,17 @@ public class Logger {
         }
     }
 
+    public void error(String message, Map<String, Object> data) {
+        if (data != null && !data.isEmpty()) {
+            logger.error("{} - {}", message, formatData(data));
+        } else {
+            logger.error(message);
+        }
+    }
+
+    public void error(String message) {
+        logger.error(message);
+    }
 
     /**
      * Format data map into a readable string for logging.
