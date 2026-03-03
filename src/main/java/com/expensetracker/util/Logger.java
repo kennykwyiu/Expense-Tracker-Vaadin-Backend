@@ -83,7 +83,18 @@ public class Logger {
         }
     }
 
-
+    /**
+     * Log warning messages for non-fatal issues that should be monitored.
+     * Use for deprecated features, performance concerns, or unusual conditions.
+     */
+    public void warn(String message, Map<String, Object> data) {
+        if (data != null && !data.isEmpty()) {
+            logger.warn("{} - {}", message, formatData(data));
+        } else {
+            logger.warn(message);
+        }
+    }
+    
     /**
      * Format data map into a readable string for logging.
      */
