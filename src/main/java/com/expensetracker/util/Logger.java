@@ -94,7 +94,11 @@ public class Logger {
             logger.warn(message);
         }
     }
-    
+
+    public void warn(String message) {
+        logger.warn(message);
+    }
+
     /**
      * Format data map into a readable string for logging.
      */
