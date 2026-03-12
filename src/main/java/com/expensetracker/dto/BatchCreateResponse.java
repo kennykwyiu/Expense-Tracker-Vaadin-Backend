@@ -13,6 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BatchCreateResponse {
+    private List<ExpenseResponse> created;
+    private List<BatchFailure> failed;
+    private Integer totalCreated;
 
     /**
      * Inner class representing a failed expense in batch operation.
