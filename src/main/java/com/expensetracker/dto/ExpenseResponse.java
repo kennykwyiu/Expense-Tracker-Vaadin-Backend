@@ -15,4 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExpenseResponse {
+    private Integer id;
+    private LocalDate date;
+    private BigDecimal amount;
+    private String category;
+    private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
