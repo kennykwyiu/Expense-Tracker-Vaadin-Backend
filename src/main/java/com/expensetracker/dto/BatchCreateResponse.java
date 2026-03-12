@@ -21,5 +21,7 @@ public class BatchCreateResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BatchFailure {
+        private Integer index;
+        private String error;
     }
 }
