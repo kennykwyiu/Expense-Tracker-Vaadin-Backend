@@ -13,4 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BatchCreateResponse {
+
+    /**
+     * Inner class representing a failed expense in batch operation.
+     */
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BatchFailure {
+    }
 }
