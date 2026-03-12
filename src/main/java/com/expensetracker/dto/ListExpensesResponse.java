@@ -14,4 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ListExpensesResponse {
+    private List<ExpenseResponse> expenses;
+    private BigDecimal total;
+    private Integer count;
+    private Integer year;
+    private Integer month;
 }
