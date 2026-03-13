@@ -14,4 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BatchCreateExpensesRequest {
+    @NotEmpty(message = "At least one expense is required")
+    @Size(max = 30, message = "Maximum 30 expenses allowed per batch")
+    private List<CreateExpenseRequest> expenses;
 }
