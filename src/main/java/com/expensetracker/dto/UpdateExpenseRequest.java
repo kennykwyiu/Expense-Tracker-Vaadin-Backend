@@ -15,4 +15,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateExpenseRequest {
+    private LocalDate date;
+
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
+    private BigDecimal amount;
+
+    @Size(min = 1, max = 50, message = "Category must be between 1 and 50 characters")
+    private String category;
+
+    @Size(max = 500, message = "Description must be 500 characters or less")
+    private String description;
 }
