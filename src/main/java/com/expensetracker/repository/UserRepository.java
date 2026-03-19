@@ -17,4 +17,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * Returns empty Optional if user doesn't exist.
      */
     Optional<User> findByOpenId(String openId);
+
+    /**
+     * Find a user by email address.
+     * Returns empty Optional if user doesn't exist.
+     */
+    Optional<User> findByEmail(String email);
 }
