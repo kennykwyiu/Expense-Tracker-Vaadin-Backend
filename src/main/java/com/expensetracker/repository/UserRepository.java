@@ -11,4 +11,10 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+    /**
+     * Find a user by their OpenID (unique identifier from OAuth).
+     * Returns empty Optional if user doesn't exist.
+     */
+    Optional<User> findByOpenId(String openId);
 }
