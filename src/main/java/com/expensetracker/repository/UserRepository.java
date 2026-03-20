@@ -23,4 +23,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * Returns empty Optional if user doesn't exist.
      */
     Optional<User> findByEmail(String email);
+
+    /**
+     * Check if a user exists by OpenID.
+     */
+    boolean existsByOpenId(String openId);
 }
