@@ -16,4 +16,18 @@ import java.util.Optional;
  */
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
+
+    /**
+     * Find all expenses for a user in a specific month.
+     * Returns expenses sorted by date in ascending order.
+     */
+    @Query("SELECT e FROM Expense e WHERE e.user.id = :userId " +
+           "AND YEAR(e.date) = :year AND MONTH(e.date) = :month " +
+           "ORDER BY e.date ASC")
+    List<Expense> findByUserIdAndYearAndMonth(
+        @Param("userId") Integer userId,
+        @Param("year") Integer year,
+        @Param("month") Integer month
+    );
+
 }
