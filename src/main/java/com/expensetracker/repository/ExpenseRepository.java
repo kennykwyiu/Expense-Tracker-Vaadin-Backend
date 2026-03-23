@@ -40,4 +40,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
         LocalDate endDate
     );
 
+    /**
+     * Find a single expense by ID and verify ownership.
+     * Returns empty Optional if expense doesn't exist or user doesn't own it.
+     */
+    Optional<Expense> findByIdAndUserId(Integer id, Integer userId);
+
 }
