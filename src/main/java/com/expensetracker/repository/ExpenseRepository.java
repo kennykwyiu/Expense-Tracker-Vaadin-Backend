@@ -52,4 +52,15 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
      */
     void deleteByUserId(Integer userId);
 
+    /**
+     * Count expenses for a user in a specific month.
+     * Useful for pagination and statistics.
+     */
+    @Query("SELECT COUNT(e) FROM Expense e WHERE e.user.id = :userId " +
+           "AND YEAR(e.date) = :year AND MONTH(e.date) = :month")
+    Long countByUserIdAndYearAndMonth(
+        @Param("userId") Integer userId,
+        @Param("year") Integer year,
+        @Param("month") Integer month
+    );
 }
