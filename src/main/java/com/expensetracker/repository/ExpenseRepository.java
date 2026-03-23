@@ -30,4 +30,14 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
         @Param("month") Integer month
     );
 
+    /**
+     * Find all expenses for a user within a date range.
+     * Useful for querying multiple months or custom date ranges.
+     */
+    List<Expense> findByUserAndDateBetweenOrderByDateAsc(
+        User user,
+        LocalDate startDate,
+        LocalDate endDate
+    );
+
 }
