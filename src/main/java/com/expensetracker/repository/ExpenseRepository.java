@@ -46,4 +46,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
      */
     Optional<Expense> findByIdAndUserId(Integer id, Integer userId);
 
+    /**
+     * Delete all expenses for a user (cascading delete).
+     * Used when deleting a user account.
+     */
+    void deleteByUserId(Integer userId);
+
 }
