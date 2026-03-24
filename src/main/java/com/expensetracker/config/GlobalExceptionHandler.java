@@ -18,4 +18,7 @@ import java.util.stream.Collectors;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final Logger logger = Logger.create(GlobalExceptionHandler.class);
+
 }
