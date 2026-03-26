@@ -66,4 +66,18 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * Convert Expense entity to ExpenseResponse DTO.
+     */
+    private ExpenseResponse mapToResponse(Expense expense) {
+        ExpenseResponse response = new ExpenseResponse();
+        response.setId(expense.getId());
+        response.setDate(expense.getDate());
+        response.setAmount(expense.getAmount());
+        response.setCategory(expense.getCategory());
+        response.setDescription(expense.getDescription());
+        response.setCreatedAt(expense.getCreatedAt());
+        response.setUpdatedAt(expense.getUpdatedAt());
+        return response;
+    }
 }
