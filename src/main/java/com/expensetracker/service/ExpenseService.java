@@ -67,6 +67,49 @@ public class ExpenseService {
     }
 
     /**
+     * Update an existing expense.
+     * Only the owner can update their expenses.
+     * Returns the updated expense or throws if not found/unauthorized.
+     */
+    public ExpenseResponse updateExpense(Integer userId, Integer expenseId, UpdateExpenseRequest request) {
+        logger.info("Updating expense", Map.of(
+            "userId", userId,
+            "expenseId", expenseId
+        ));
+
+        try {
+            Expense expense = expenseRepository.findByIdAndUserId(expenseId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("Expense not found or unauthorized"));
+
+            if (request.getDate() != null) {
+                expense.setDate(request.getDate());
+            }
+            if (request.getAmount() != null) {
+                expense.setAmount(request.getAmount());
+            }
+            if (request.getCategory() != null) {
+                expense.setCategory(request.getCategory());
+            }
+            if (request.getDescription() != null) {
+                expense.setDescription(request.getDescription());
+            }
+
+            Expense updated = expenseRepository.save(expense);
+
+            logger.info("Expense updated successfully", Map.of(
+                "expenseId", expenseId,
+                "userId", userId
+            ));
+
+            return mapToResponse(updated);
+        } catch (Exception e) {
+            logger.error("Failed to update expense", e);
+            throw new RuntimeException("Failed to update expense: " + e.getMessage());
+        }
+    }
+
+
+    /**
      * Convert Expense entity to ExpenseResponse DTO.
      */
     private ExpenseResponse mapToResponse(Expense expense) {
