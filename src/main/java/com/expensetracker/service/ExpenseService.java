@@ -29,4 +29,41 @@ public class ExpenseService {
     private final UserRepository userRepository;
     private final Logger logger = Logger.create(ExpenseService.class);
 
+    /**
+     * Create a single expense for the authenticated user.
+     * Validates input and persists to database.
+     */
+    public ExpenseResponse createExpense(Integer userId, CreateExpenseRequest request) {
+        logger.info("Creating expense", Map.of(
+            "userId", userId,
+            "date", request.getDate(),
+            "amount", request.getAmount(),
+            "category", request.getCategory()
+        ));
+
+        try {
+            User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            Expense expense = new Expense();
+            expense.setUser(user);
+            expense.setDate(request.getDate());
+            expense.setAmount(request.getAmount());
+            expense.setCategory(request.getCategory());
+            expense.setDescription(request.getDescription());
+
+            Expense saved = expenseRepository.save(expense);
+
+            logger.info("Expense created successfully", Map.of(
+                "expenseId", saved.getId(),
+                "userId", userId
+            ));
+
+            return mapToResponse(saved);
+        } catch (Exception e) {
+            logger.error("Failed to create expense", e);
+            throw new RuntimeException("Failed to create expense: " + e.getMessage());
+        }
+    }
+
 }
