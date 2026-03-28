@@ -108,6 +108,41 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * Delete an expense.
+     * Only the owner can delete their expenses.
+     * Returns true if deleted, false if not found/unauthorized.
+     */
+    public boolean deleteExpense(Integer userId, Integer expenseId) {
+        logger.info("Deleting expense", Map.of(
+            "userId", userId,
+            "expenseId", expenseId
+        ));
+
+        try {
+            Expense expense = expenseRepository.findByIdAndUserId(expenseId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("Expense not found or unauthorized"));
+
+            expenseRepository.delete(expense);
+
+            logger.info("Expense deleted successfully", Map.of(
+                "expenseId", expenseId,
+                "userId", userId
+            ));
+
+            return true;
+        } catch (IllegalArgumentException e) {
+            logger.warn("Expense not found or unauthorized", Map.of(
+                "userId", userId,
+                "expenseId", expenseId
+            ));
+            return false;
+        } catch (Exception e) {
+            logger.error("Failed to delete expense", e);
+            throw new RuntimeException("Failed to delete expense: " + e.getMessage());
+        }
+    }
+
 
     /**
      * Convert Expense entity to ExpenseResponse DTO.
