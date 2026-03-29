@@ -143,6 +143,52 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * List all expenses for a user in a specific month.
+     * Returns expenses sorted by date with total amount calculated.
+     */
+    public ListExpensesResponse listExpensesByMonth(Integer userId, ListExpensesRequest request) {
+        logger.info("Listing expenses by month", Map.of(
+            "userId", userId,
+            "year", request.getYear(),
+            "month", request.getMonth()
+        ));
+
+        try {
+            List<Expense> expenses = expenseRepository.findByUserIdAndYearAndMonth(
+                userId,
+                request.getYear(),
+                request.getMonth()
+            );
+
+            BigDecimal total = expenses.stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            List<ExpenseResponse> responses = expenses.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+            logger.info("Expenses retrieved successfully", Map.of(
+                "userId", userId,
+                "count", expenses.size(),
+                "total", total
+            ));
+
+            ListExpensesResponse response = new ListExpensesResponse();
+            response.setExpenses(responses);
+            response.setTotal(total);
+            response.setCount(expenses.size());
+            response.setYear(request.getYear());
+            response.setMonth(request.getMonth());
+
+            return response;
+        } catch (Exception e) {
+            logger.error("Failed to list expenses", e);
+            throw new RuntimeException("Failed to list expenses: " + e.getMessage());
+        }
+    }
+
 
     /**
      * Convert Expense entity to ExpenseResponse DTO.
