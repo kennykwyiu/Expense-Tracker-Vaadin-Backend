@@ -189,6 +189,54 @@ public class ExpenseService {
         }
     }
 
+    /**
+     * Create multiple expenses in a batch operation.
+     * Processes up to 10 expenses, returning created records and any failures.
+     * Attempts to create each expense individually to maximize success rate.
+     */
+    public BatchCreateResponse batchCreateExpenses(Integer userId, BatchCreateExpensesRequest request) {
+        logger.info("Batch creating expenses", Map.of(
+            "userId", userId,
+            "count", request.getExpenses().size()
+        ));
+
+        List<ExpenseResponse> created = new ArrayList<>();
+        List<BatchCreateResponse.BatchFailure> failed = new ArrayList<>();
+
+        for (int i = 0; i < request.getExpenses().size(); i++) {
+            try {
+                CreateExpenseRequest expenseRequest = request.getExpenses().get(i);
+                ExpenseResponse response = createExpense(userId, expenseRequest);
+                created.add(response);
+
+                logger.debug("Batch expense created", Map.of(
+                    "index", i,
+                    "expenseId", response.getId()
+                ));
+            } catch (Exception e) {
+                String errorMessage = e.getMessage() != null ? e.getMessage() : "Unknown error";
+                failed.add(new BatchCreateResponse.BatchFailure(i, errorMessage));
+
+                logger.warn("Batch expense creation failed", Map.of(
+                    "index", i,
+                    "error", errorMessage
+                ));
+            }
+        }
+
+        logger.info("Batch creation completed", Map.of(
+            "userId", userId,
+            "totalCreated", created.size(),
+            "totalFailed", failed.size()
+        ));
+
+        BatchCreateResponse response = new BatchCreateResponse();
+        response.setCreated(created);
+        response.setFailed(failed.isEmpty() ? null : failed);
+        response.setTotalCreated(created.size());
+
+        return response;
+    }
 
     /**
      * Convert Expense entity to ExpenseResponse DTO.
