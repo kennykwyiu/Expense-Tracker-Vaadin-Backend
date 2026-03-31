@@ -20,4 +20,7 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ExpenseController {
 
+    private final ExpenseService expenseService;
+    private final Logger logger = Logger.create(ExpenseController.class);
+
 }
