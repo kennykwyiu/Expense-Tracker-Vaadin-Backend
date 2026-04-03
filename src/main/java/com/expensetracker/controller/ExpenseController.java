@@ -44,4 +44,28 @@ public class ExpenseController {
         }
     }
 
+    /**
+     * Update an existing expense.
+     * PUT /api/expenses/{id}
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<ExpenseResponse> updateExpense(
+        @PathVariable Integer id,
+        @Valid @RequestBody UpdateExpenseRequest request
+    ) {
+        logger.info("PUT /expenses/{id} - Updating expense", java.util.Map.of("id", id));
+        try {
+            // TODO: Extract userId from authenticated user context
+            Integer userId = 1;
+            ExpenseResponse response = expenseService.updateExpense(userId, id, request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            logger.warn("Expense not found", java.util.Map.of("id", id));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            logger.error("Failed to update expense", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
