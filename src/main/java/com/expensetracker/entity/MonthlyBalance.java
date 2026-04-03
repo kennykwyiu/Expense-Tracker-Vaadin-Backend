@@ -66,4 +66,10 @@ public class MonthlyBalance {
             expenseBudget = BigDecimal.ZERO;
         }
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
 }
