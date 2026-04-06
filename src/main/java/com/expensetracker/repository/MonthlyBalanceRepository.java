@@ -1,5 +1,7 @@
 package com.expensetracker.repository;
 
+import com.expensetracker.entity.MonthlyBalance;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -7,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * Provides database operations for monthly balance tracking.
  */
 @Repository
-public class MonthlyBalanceRepository {
+public interface MonthlyBalanceRepository extends JpaRepository<MonthlyBalance, Integer> {
 }
