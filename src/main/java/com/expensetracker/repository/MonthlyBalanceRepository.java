@@ -32,6 +32,8 @@ public interface MonthlyBalanceRepository extends JpaRepository<MonthlyBalance, 
     @Query("SELECT mb FROM MonthlyBalance mb WHERE mb.userId = :userId ORDER BY mb.year DESC, mb.month DESC LIMIT 1")
     Optional<MonthlyBalance> findLatestByUserId(@Param("userId") Integer userId);
 
-
-
+    /**
+     * Find all balance records for user
+     */
+    List<MonthlyBalance> findByUserIdOrderByYearDescMonthDesc(Integer userId);
 }
