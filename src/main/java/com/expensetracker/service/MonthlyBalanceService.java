@@ -1,5 +1,6 @@
 package com.expensetracker.service;
 
+import com.expensetracker.dto.MonthlyBalanceResponse;
 import com.expensetracker.entity.MonthlyBalance;
 import com.expensetracker.repository.MonthlyBalanceRepository;
 import com.expensetracker.util.Logger;
@@ -38,5 +39,23 @@ public class MonthlyBalanceService {
         balance.setUpdatedAt(LocalDateTime.now());
 
         return balanceRepository.save(balance);
+    }
+
+    /**
+     * Convert entity to response DTO
+     */
+    private MonthlyBalanceResponse convertToResponse(MonthlyBalance balance) {
+        MonthlyBalanceResponse response = new MonthlyBalanceResponse();
+        response.setId(balance.getId());
+        response.setUserId(balance.getUserId());
+        response.setYear(balance.getYear());
+        response.setMonth(balance.getMonth());
+        response.setLastMonthBalance(balance.getLastMonthBalance());
+        response.setIncomeThisWeek(balance.getIncomeThisWeek());
+        response.setExpenseBudget(balance.getExpenseBudget());
+        response.setCurrentBalance(balance.getCurrentBalance());
+        response.setCreatedAt(balance.getCreatedAt());
+        response.setUpdatedAt(balance.getUpdatedAt());
+        return response;
     }
 }
