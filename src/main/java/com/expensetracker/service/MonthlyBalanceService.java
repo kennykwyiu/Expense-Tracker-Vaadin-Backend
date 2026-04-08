@@ -35,6 +35,29 @@ public class MonthlyBalanceService {
     }
 
     /**
+     * Create monthly balance record
+     */
+    public MonthlyBalanceResponse createMonthlyBalance(Integer userId, Integer year, Integer month,
+                                                       BigDecimal lastMonthBalance, BigDecimal expenseBudget) {
+        logger.info("Creating monthly balance for user " + userId + " - " + year + "-" + month);
+
+        MonthlyBalance balance = new MonthlyBalance();
+        balance.setUserId(userId);
+        balance.setYear(year);
+        balance.setMonth(month);
+        balance.setLastMonthBalance(lastMonthBalance != null ? lastMonthBalance : BigDecimal.ZERO);
+        balance.setIncomeThisWeek(BigDecimal.ZERO);
+        balance.setExpenseBudget(expenseBudget != null ? expenseBudget : BigDecimal.ZERO);
+        balance.setCreatedAt(LocalDateTime.now());
+        balance.setUpdatedAt(LocalDateTime.now());
+
+        MonthlyBalance saved = balanceRepository.save(balance);
+        logger.info("Monthly balance created with ID: " + saved.getId());
+
+        return convertToResponse(saved);
+    }
+
+    /**
      * Create default balance record if not exists
      */
     private MonthlyBalance createDefaultBalance(Integer userId, Integer year, Integer month) {
