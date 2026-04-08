@@ -76,6 +76,24 @@ public class MonthlyBalanceService {
     }
 
     /**
+     * Update expense budget
+     */
+    public MonthlyBalanceResponse updateExpenseBudget(Integer userId, Integer year, Integer month, BigDecimal budget) {
+        logger.info("Updating expense budget for user " + userId + " - " + year + "-" + month + " - Amount: " + budget);
+
+        MonthlyBalance balance = balanceRepository.findByUserIdAndYearAndMonth(userId, year, month)
+                .orElseGet(() -> createDefaultBalance(userId, year, month));
+
+        balance.setExpenseBudget(budget != null ? budget : BigDecimal.ZERO);
+        balance.setUpdatedAt(LocalDateTime.now());
+
+        MonthlyBalance updated = balanceRepository.save(balance);
+        logger.info("Expense budget updated successfully");
+
+        return convertToResponse(updated);
+    }
+
+    /**
      * Create default balance record if not exists
      */
     private MonthlyBalance createDefaultBalance(Integer userId, Integer year, Integer month) {
