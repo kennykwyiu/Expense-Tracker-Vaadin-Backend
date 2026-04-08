@@ -1,6 +1,7 @@
 package com.expensetracker.service;
 
 import com.expensetracker.dto.MonthlyBalanceResponse;
+import com.expensetracker.dto.UpdateMonthlyBalanceRequest;
 import com.expensetracker.entity.MonthlyBalance;
 import com.expensetracker.repository.MonthlyBalanceRepository;
 import com.expensetracker.util.Logger;
@@ -107,6 +108,33 @@ public class MonthlyBalanceService {
 
         MonthlyBalance updated = balanceRepository.save(record);
         logger.info("Last month balance updated successfully");
+
+        return convertToResponse(updated);
+    }
+
+    /**
+     * Update multiple fields at once
+     */
+    public MonthlyBalanceResponse updateMonthlyBalance(Integer userId, Integer year, Integer month,
+                                                       UpdateMonthlyBalanceRequest request) {
+        logger.info("Updating monthly balance for user " + userId + " - " + year + "-" + month);
+
+        MonthlyBalance balance = balanceRepository.findByUserIdAndYearAndMonth(userId, year, month)
+                .orElseGet(() -> createDefaultBalance(userId, year, month));
+
+        if (request.getLastMonthBalance() != null) {
+            balance.setLastMonthBalance(request.getLastMonthBalance());
+        }
+        if (request.getIncomeThisWeek() != null) {
+            balance.setIncomeThisWeek(request.getIncomeThisWeek());
+        }
+        if (request.getExpenseBudget() != null) {
+            balance.setExpenseBudget(request.getExpenseBudget());
+        }
+        balance.setUpdatedAt(LocalDateTime.now());
+
+        MonthlyBalance updated = balanceRepository.save(balance);
+        logger.info("Monthly balance updated successfully");
 
         return convertToResponse(updated);
     }
