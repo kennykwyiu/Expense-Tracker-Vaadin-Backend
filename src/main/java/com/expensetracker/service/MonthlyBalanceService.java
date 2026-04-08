@@ -23,6 +23,18 @@ public class MonthlyBalanceService {
     private final Logger logger = Logger.create(MonthlyBalanceService.class);
 
     /**
+     * Get monthly balance for user
+     */
+    public MonthlyBalanceResponse getMonthlyBalance(Integer userId, Integer year, Integer month) {
+        logger.info("Getting monthly balance for user " + userId + " - " + year + "-" + month);
+
+        MonthlyBalance balance = balanceRepository.findByUserIdAndYearAndMonth(userId, year, month)
+                .orElseGet(() -> createDefaultBalance(userId, year, month));
+
+        return convertToResponse(balance);
+    }
+
+    /**
      * Create default balance record if not exists
      */
     private MonthlyBalance createDefaultBalance(Integer userId, Integer year, Integer month) {
