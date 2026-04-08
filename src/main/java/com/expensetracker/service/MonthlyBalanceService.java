@@ -94,6 +94,24 @@ public class MonthlyBalanceService {
     }
 
     /**
+     * Update last month balance (for month carryover)
+     */
+    public MonthlyBalanceResponse updateLastMonthBalance(Integer userId, Integer year, Integer month, BigDecimal balance) {
+        logger.info("Updating last month balance for user " + userId + " - " + year + "-" + month + " - Amount: " + balance);
+
+        MonthlyBalance record = balanceRepository.findByUserIdAndYearAndMonth(userId, year, month)
+                .orElseGet(() -> createDefaultBalance(userId, year, month));
+
+        record.setLastMonthBalance(balance != null ? balance : BigDecimal.ZERO);
+        record.setUpdatedAt(LocalDateTime.now());
+
+        MonthlyBalance updated = balanceRepository.save(record);
+        logger.info("Last month balance updated successfully");
+
+        return convertToResponse(updated);
+    }
+
+    /**
      * Create default balance record if not exists
      */
     private MonthlyBalance createDefaultBalance(Integer userId, Integer year, Integer month) {
