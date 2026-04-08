@@ -58,6 +58,24 @@ public class MonthlyBalanceService {
     }
 
     /**
+     * Update income for the week
+     */
+    public MonthlyBalanceResponse updateIncomeThisWeek(Integer userId, Integer year, Integer month, BigDecimal income) {
+        logger.info("Updating income for user " + userId + " - " + year + "-" + month + " - Amount: " + income);
+
+        MonthlyBalance balance = balanceRepository.findByUserIdAndYearAndMonth(userId, year, month)
+                .orElseGet(() -> createDefaultBalance(userId, year, month));
+
+        balance.setIncomeThisWeek(income != null ? income : BigDecimal.ZERO);
+        balance.setUpdatedAt(LocalDateTime.now());
+
+        MonthlyBalance updated = balanceRepository.save(balance);
+        logger.info("Income updated successfully");
+
+        return convertToResponse(updated);
+    }
+
+    /**
      * Create default balance record if not exists
      */
     private MonthlyBalance createDefaultBalance(Integer userId, Integer year, Integer month) {
