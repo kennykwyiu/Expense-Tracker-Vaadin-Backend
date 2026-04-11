@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 /**
  * REST Controller for monthly balance management endpoints.
  * All endpoints are prefixed with /api/balance
@@ -39,6 +41,32 @@ public class BalanceController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("Failed to get monthly balance - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Create monthly balance record
+     * POST /api/balance
+     */
+    @PostMapping
+    public ResponseEntity<MonthlyBalanceResponse> createMonthlyBalance(
+            @RequestParam Integer year,
+            @RequestParam Integer month,
+            @RequestParam(required = false) BigDecimal lastMonthBalance,
+            @RequestParam(required = false) BigDecimal expenseBudget
+    ) {
+        logger.info("POST /balance - Creating balance for " + year + "-" + month);
+        try {
+            // TODO: Extract userId from authenticated user context
+            Integer userId = 1;
+
+            MonthlyBalanceResponse response = balanceService.createMonthlyBalance(
+                    userId, year, month, lastMonthBalance, expenseBudget
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            logger.error("Failed to create monthly balance - " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
