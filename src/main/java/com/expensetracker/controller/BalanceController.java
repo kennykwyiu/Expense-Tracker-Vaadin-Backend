@@ -70,4 +70,26 @@ public class BalanceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    /**
+     * Update income for the week
+     * PUT /api/balance/{year}/{month}/income
+     */
+    @PutMapping("/{year}/{month}/income")
+    public ResponseEntity<MonthlyBalanceResponse> updateIncomeThisWeek(
+            @PathVariable Integer year,
+            @PathVariable Integer month,
+            @RequestParam BigDecimal income
+    ) {
+        logger.info("PUT /balance/{year}/{month}/income - Updating income: " + income);
+        try {
+            Integer userId = 1;
+
+            MonthlyBalanceResponse response = balanceService.updateIncomeThisWeek(userId, year, month, income);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Failed to update income - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
