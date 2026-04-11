@@ -115,4 +115,25 @@ public class BalanceController {
         }
     }
 
+    /**
+     * Update last month balance
+     * PUT /api/balance/{year}/{month}/last-month-balance
+     */
+    @PutMapping("/{year}/{month}/last-month-balance")
+    public ResponseEntity<MonthlyBalanceResponse> updateLastMonthBalance(
+            @PathVariable Integer year,
+            @PathVariable Integer month,
+            @RequestParam BigDecimal balance
+    ) {
+        logger.info("PUT /balance/{year}/{month}/last-month-balance - Updating: " + balance);
+        try {
+            Integer userId = 1;
+
+            MonthlyBalanceResponse response = balanceService.updateLastMonthBalance(userId, year, month, balance);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Failed to update last month balance - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
