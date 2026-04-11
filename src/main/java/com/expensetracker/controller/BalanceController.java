@@ -1,6 +1,7 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.MonthlyBalanceResponse;
+import com.expensetracker.dto.UpdateMonthlyBalanceRequest;
 import com.expensetracker.service.MonthlyBalanceService;
 import com.expensetracker.util.Logger;
 import lombok.RequiredArgsConstructor;
@@ -133,6 +134,28 @@ public class BalanceController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("Failed to update last month balance - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Update multiple balance fields
+     * PUT /api/balance/{year}/{month}
+     */
+    @PutMapping("/{year}/{month}")
+    public ResponseEntity<MonthlyBalanceResponse> updateMonthlyBalance(
+            @PathVariable Integer year,
+            @PathVariable Integer month,
+            @RequestBody UpdateMonthlyBalanceRequest request
+    ) {
+        logger.info("PUT /balance/{year}/{month} - Updating balance");
+        try {
+            Integer userId = 1;
+
+            MonthlyBalanceResponse response = balanceService.updateMonthlyBalance(userId, year, month, request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Failed to update monthly balance - " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
