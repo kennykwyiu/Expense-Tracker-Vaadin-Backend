@@ -92,4 +92,27 @@ public class BalanceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    /**
+     * Update expense budget
+     * PUT /api/balance/{year}/{month}/budget
+     */
+    @PutMapping("/{year}/{month}/budget")
+    public ResponseEntity<MonthlyBalanceResponse> updateExpenseBudget(
+            @PathVariable Integer year,
+            @PathVariable Integer month,
+            @RequestParam BigDecimal budget
+    ) {
+        logger.info("PUT /balance/{year}/{month}/budget - Updating budget: " + budget);
+        try {
+            Integer userId = 1;
+
+            MonthlyBalanceResponse response = balanceService.updateExpenseBudget(userId, year, month, budget);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Failed to update budget - " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
