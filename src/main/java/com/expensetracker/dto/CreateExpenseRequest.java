@@ -28,4 +28,11 @@ public class CreateExpenseRequest {
 
     @Size(max = 500, message = "Description must be 500 characters or less")
     private String description;
+
+    /**
+     * 1-based order from the add-another-item list. Optional; backend
+     * continues from the max sequence for that date when omitted.
+     */
+    @Min(value = 1, message = "Sequence must be at least 1")
+    private Integer sequence;
 }
