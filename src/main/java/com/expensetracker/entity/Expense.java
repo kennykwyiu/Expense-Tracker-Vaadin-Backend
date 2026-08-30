@@ -45,6 +45,13 @@ public class Expense {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    /**
+     * Order of this expense among items for the same user and date.
+     * Assigned from the frontend "Add Another Item" sequence on save.
+     */
+    @Column(name = "sequence", nullable = false)
+    private Integer sequence = 0;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
