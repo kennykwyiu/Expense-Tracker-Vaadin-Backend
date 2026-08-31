@@ -23,7 +23,7 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
      */
     @Query("SELECT e FROM Expense e WHERE e.user.id = :userId " +
            "AND YEAR(e.date) = :year AND MONTH(e.date) = :month " +
-           "ORDER BY e.date ASC")
+           "ORDER BY e.date ASC, e.sequence ASC, e.id ASC")
     List<Expense> findByUserIdAndYearAndMonth(
         @Param("userId") Integer userId,
         @Param("year") Integer year,
