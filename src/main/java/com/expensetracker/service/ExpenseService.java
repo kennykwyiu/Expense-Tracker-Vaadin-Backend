@@ -162,6 +162,7 @@ public class ExpenseService {
             );
 
             BigDecimal total = expenses.stream()
+                .sorted(Comparator.comparing(Expense::getDate).reversed())
                 .map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
