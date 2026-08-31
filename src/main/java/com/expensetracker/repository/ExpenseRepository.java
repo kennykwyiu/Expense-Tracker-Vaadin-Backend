@@ -31,6 +31,16 @@ public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
     );
 
     /**
+     * Highest sequence for a user on a given date, used to continue
+     * numbering when more items are added later.
+     */
+    @Query("SELECT MAX(e.sequence) FROM Expense e WHERE e.user.id = :userId AND e.date = :date")
+    Integer findMaxSequenceByUserIdAndDate(
+        @Param("userId") Integer userId,
+        @Param("date") LocalDate date
+    );
+
+    /**
      * Find all expenses for a user within a date range.
      * Useful for querying multiple months or custom date ranges.
      */
