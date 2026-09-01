@@ -253,4 +253,14 @@ public class ExpenseService {
         response.setUpdatedAt(expense.getUpdatedAt());
         return response;
     }
+
+    private static class IndexedExpense {
+        final int index;
+        final CreateExpenseRequest request;
+
+        IndexedExpense(int index, CreateExpenseRequest request) {
+            this.index = index;
+            this.request = request;
+        }
+    }
 }
